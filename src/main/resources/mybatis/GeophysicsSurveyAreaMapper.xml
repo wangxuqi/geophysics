@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.xuqi.geophysics.mapper.GeophysicsSurveyAreaMapper">
+    <resultMap type="org.xuqi.geophysics.entity.GeophysicsSurveyArea"
+               id="survey_area_mapping">
+        <id column="survey_area_id" property="surveyAreaId"/>
+        <result column="city_id" property="cityId"/>
+        <result column="name" property="name"/>
+        <result column="coords" property="polygon"/>
+        <result column="method_id" property="methodId"/>
+        <result column="project_id" property="projectId"/>
+        <result column="start_time" property="startTime"/>
+        <result column="finish_time" property="finishTime"/>
+    </resultMap>
+    <insert id="insert">
+        replace into geophysics_survey_areas (survey_area_id,name,coords,method_id,project_id,start_time,finish_time)
+        values
+        (#{surveyAreaId},#{name},#{polygon},#{methodId},#{projectId},#{startTime},#{finishTime})
+    </insert>
+
+    <insert id="batchInsert" parameterType="java.util.List">
+        replace into geophysics_survey_areas (survey_area_id,name,coords,method_id,project_id,start_time,finish_time)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.surveyAreaId},#{item.name},(#{item.polygon}),#{item.methodId},
+            #{item.projectId},#{item.startTime},#{item.finishTime})
+        </foreach>
+    </insert>
+
+
+    <select id="getAllSurveyAreas" resultMap="survey_area_mapping">
+        select * from geophysics_survey_areas
+    </select>
+
+    <select id="getSurveyAreasByProjectId" resultMap="survey_area_mapping">
+        select * from geophysics_survey_areas where project_id = #{projectId}
+    </select>
+
+    <select id="getSurveyAreasByProjectIdAndMethodId" resultMap="survey_area_mapping">
+        select * from geophysics_survey_areas where project_id = #{projectId} and method_id = #{methodId}
+    </select>
+</mapper>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.xuqi.geophysics.mapper.GeophysicsAnomalyMapper">
+    <resultMap type="org.xuqi.geophysics.entity.GeophysicsAnomaly"
+               id="survey_anomaly_mapping">
+        <id column="anomaly_id" property="anomalyId"/>
+        <result column="coords" property="polygon"/>
+        <result column="create_time" property="createTime"/>
+        <result column="approver" property="approver"/>
+        <result column="suspected_thing" property="suspectedThing"/>
+        <result column="anomaly_3Dmodel_path" property="anomaly3DModelPath"/>
+    </resultMap>
+    <insert id="insert">
+        replace into geophysics_anomalies (anomay_id,coords,create_time,approver,suspected_thing,anomaly_3Dmodel_path)
+        values
+        (#{anomalyId},#{polygon},#{createTime},#{approver},#{suspectedThing},#{anomaly3DModelPath})
+    </insert>
+
+    <insert id="batchInsert" parameterType="java.util.List">
+        replace into geophysics_anomalies (anomay_id,coords,create_time,approver,suspected_thing,anomaly_3Dmodel_path)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.anomalyId},#{item.polygon},#{item.createTime},#{item.approver},#{item.suspectedThing},#{item.anomaly3DModelPath})
+        </foreach>
+    </insert>
+
+    <select id="getAnomalyByAnomalyId" resultMap="survey_anomaly_mapping">
+        select * from geophysics_survey_areas where anomay_id=#{anomalyId}
+    </select>
+</mapper>

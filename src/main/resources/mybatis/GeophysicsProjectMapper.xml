@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.xuqi.geophysics.mapper.GeophysicsProjectMapper">
+    <resultMap type="org.xuqi.geophysics.entity.GeophysicsProject"
+               id="survey_project_mapping">
+        <id column="project_id" property="projectId"/>
+        <result column="name" property="name"/>
+        <result column="coords" property="polygon"/>
+        <result column="start_time" property="startTime"/>
+        <result column="finish_time" property="finishTime"/>
+        <result column="principal" property="principal"/>
+    </resultMap>
+    <insert id="insert">
+        replace into geophysics_projects (project_id,name,coords,start_time,finish_time,principal)
+        values
+        (#{projectId},#{name},#{polygon},#{startTime},#{finishTime},#{principal})
+    </insert>
+
+    <insert id="batchInsert" parameterType="java.util.List">
+        replace into geophysics_projects (project_id,name,coords,start_time,finish_time,principal)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.projectId},#{item.name},#{item.polygon},#{item.startTime},#{item.finishTime},#{item.principal})
+        </foreach>
+    </insert>
+
+    <select id="getAllGeophysicsProjects" resultMap="survey_project_mapping">
+        select * from geophysics_projects
+    </select>
+
+
+    <select id="getProjectById" resultMap="survey_project_mapping">
+        select * from geophysics_projects where project_id = #{projectId}
+    </select>
+
+</mapper>

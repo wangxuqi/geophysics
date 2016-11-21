@@ -1,0 +1,11 @@
+#panel {
+   position: absolute;
+   left: 0;
+   top: 0;
+   bottom: 0;
+   width: 250px;
+   z-index: 200;
+   background:#00FF00;
+}
+
+
